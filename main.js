@@ -5,10 +5,13 @@ var backends = require("./backends.js");
 var regexer = require("./regexer.js");
 
 var backend_list = [];
+var ibsearch = require("./backend/ibsearch.js");
 function initBackends() {
 	backends.list.forEach(function (el) {
-		backend_list.push(require(el));
+		backend_list.push(require("./backend/"+el+".js"));
 	});
+	console.log(backend_list);
+	
 }
 
 
@@ -19,12 +22,26 @@ client.on("message", function(nick, to, text, message) {
 });
 
 function processCommand(command, to) {
-	var command_arr = command.split(" ");
-	var backend_to_call = command_arr[0]
 
-	var action_raw_arr = command_arr[1].split(",")
-	var action = action_raw_arr[0];
-	var params = action_raw_arr.slice(1);
+	if (command == "ib") {
+		var action = "search";
+		var params = [];
+	}
+	else {
+		var command_arr = command.split(" ");
+		var backend_to_call = command_arr[0]
 
-	client.say(to, backend_list[backend_list.indexOf(backend_to_call)].execute(action, params));
+		var action_raw_arr = command_arr.splice(1);
+
+		var action = action_raw_arr[0];
+		var params = action_raw_arr.slice(1);
+	}
+	
+
+	ibsearch.e.once('return', function(string) {
+		client.say(to, string);
+		ibsearch.e.removeAllListeners('return');
+	});
+
+	ibsearch.execute(action, params);
 }

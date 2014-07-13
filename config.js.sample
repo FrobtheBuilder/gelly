@@ -1,5 +1,5 @@
 module.exports = {
-	server: 'irc.wetfish.net'
+	server: 'irc.freenode.net'
     nick: 'gelly',
     prefix: '^',
     userName: 'Gelly',
