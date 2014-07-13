@@ -35,23 +35,12 @@ function search(params) {
 	var raw_response;
 
 	if (site == "g") site = "gelbooru";
-	if (site == "any") {
-		site = ""
-	}
-	else {
-		site = "site:"+site;
-	}
+	if (site == "any" || site == "all") { site = "" } else { site = "site:"+site }
+
 	options.path = "/?action=search&search[phrase]="+site;
 	var tags = params.splice(1);
-	tags.forEach(function(tag, index, array) {
-		if (index > 0) {
-			options.path += "+%2B"+tag;
-		}
-		else {
-			options.path += "+%2B"+tag;
-		}
-		
-		
+	tags.forEach(function(tag) {
+		options.path += "+%2B"+tag;
 	})
 	options.path += "&search[count]=100&format=js&js[data]=json";
 	console.log(options.path);

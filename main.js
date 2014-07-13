@@ -3,16 +3,9 @@ var irc = require("irc");
 var conf = require("./config.js");
 var backends = require("./backends.js");
 
-var backend_list = [];
-var ibsearch = require("./backend/ibsearch.js");
-function initBackends() {
-	backends.list.forEach(function (el) {
-		backend_list.push(require("./backend/"+el+".js"));
-	});
-	console.log(backend_list);
-	
-}
+String.prototype.contains = function(it) { return this.indexOf(it) != -1; };
 
+var ibsearch = require("./backend/ibsearch.js");
 
 var client = new irc.Client(conf.server, conf.nick, conf);
 
@@ -22,24 +15,41 @@ client.on("message", function(nick, to, text, message) {
 
 function processCommand(command, to) {
 
-	if (command == "ib") {
-		var action = "search";
-		var params = [];
-	}
-	else {
-		var command_arr = command.split(" ");
-		var backend_to_call = command_arr[0]
+	var command_arr = command.split(" ");
+	var backend_to_call;
+	var action;
+	var params;
 
-		var action_raw_arr = command_arr.splice(1);
+	if (command_arr[0] === "porn") {
 
-		var action = action_raw_arr[0];
-		var params = action_raw_arr.slice(1);
+		command_arr[0] = "ib";
+		//command_arr[1] = "-s";
+		command_arr.splice(1, 0, "any");
+		console.log(command_arr);
+		console.log("UH HELLO");
 	}
 	
+	backend_to_call = command_arr[0];
 
+	var action_raw_arr = command_arr.slice(1);
+
+	action_raw_arr.forEach(function (part) {
+		if (part.contains("-")) {
+			action = part.substr(1);
+		}
+	})
+
+	if (action) {
+		params = action_raw_arr.splice(action_raw_arr.indexOf("-"+action, 1));
+	}
+	else {
+		action = "search";
+		params = action_raw_arr;
+	}
+	
+	ibsearch.e.removeAllListeners('return');
 	ibsearch.e.once('return', function(string) {
 		client.say(to, string);
-		ibsearch.e.removeAllListeners('return');
 	});
 
 	ibsearch.execute(action, params);
