@@ -2,7 +2,6 @@
 var irc = require("irc");
 var conf = require("./config.js");
 var backends = require("./backends.js");
-var regexer = require("./regexer.js");
 
 var backend_list = [];
 var ibsearch = require("./backend/ibsearch.js");
