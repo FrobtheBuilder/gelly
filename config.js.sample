@@ -1,5 +1,7 @@
 module.exports = {
 	server: 'irc.wetfish.net'
+    nick: 'gelly',
+    prefix: '^',
     userName: 'Gelly',
     realName: 'Gelly - node-irc based bot',
     port: 6697,
@@ -19,4 +21,4 @@ module.exports = {
     messageSplit: 512
 }
 
-//format from node-irc docs
+//format from node-irc docs plus some added propertiesss
