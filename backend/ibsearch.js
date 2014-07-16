@@ -10,7 +10,8 @@ var options = {
 	port: 80,
 	method: 'POST'
 };
-var req;
+
+
 
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
@@ -24,6 +25,7 @@ exports.execute = function(action, params) {
 
 function search(params) {
 	var site;
+	var req;
 
 	if (params[0] != undefined) {
 		site = params[0];
@@ -35,7 +37,7 @@ function search(params) {
 	var raw_response;
 
 	if (site == "g") site = "gelbooru";
-	if (site == "any" || site == "all") { site = "-site:lolibooru" } else { site = "site:"+site }
+	if (site == "any" || site == "all") { site = "-site:lolibooru" } else { site = "site:"+site } //lolibooru is down
 
 	options.path = "/?action=search&search[phrase]="+site;
 	var tags = params.splice(1);
@@ -44,6 +46,7 @@ function search(params) {
 	})
 	options.path += "&search[count]=100&format=js&js[data]=json";
 	console.log(options.path);
+
 	req = http.request(options)
 
 	req.on('response', function(res) {
@@ -52,7 +55,7 @@ function search(params) {
 		})
 		res.on("end", function() {
 			var undefinedGotIbSearch = process;
-			eval(raw_response); //process();
+			eval(raw_response); //process(); lel good use of eval
 		})
 
 	})

@@ -21,9 +21,7 @@ function processCommand(command, to) {
 	var params;
 
 	if (command_arr[0] === "porn") {
-
 		command_arr[0] = "ib";
-		//command_arr[1] = "-s";
 		command_arr.splice(1, 0, "any");
 		console.log(command_arr);
 	}
