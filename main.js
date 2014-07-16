@@ -48,7 +48,7 @@ function processCommand(command, to) {
 	
 	ibsearch.e.removeAllListeners('return');
 	ibsearch.e.once('return', function(string) {
-		client.say(to, string);
+		client.say(to, '14'+string);
 	});
 
 	ibsearch.execute(action, params);
