@@ -26,7 +26,6 @@ function processCommand(command, to) {
 		//command_arr[1] = "-s";
 		command_arr.splice(1, 0, "any");
 		console.log(command_arr);
-		console.log("UH HELLO");
 	}
 	
 	backend_to_call = command_arr[0];
