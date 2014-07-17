@@ -1,8 +1,6 @@
 var http = require("http");
 var events = require("events");
-var eventEmitter = new events.EventEmitter();
 
-exports.e = eventEmitter;
 exports.alias = "ib";
 
 var options = {
@@ -10,20 +8,45 @@ var options = {
 	port: 80,
 	method: 'POST'
 };
-var req;
+
+var client;
+var recipient;
+
 
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-exports.execute = function(action, params) {
-	//param 1: site to search
-	//param 2... tags
-	if (action == "search" || action == "s") search(params);
+exports.execute = function(request) {
+	var action;
+	var action_raw_arr = request.command_arr.slice(1);
+	client = request.client;
+	recipient = request.recipient;
+	if (request.command_arr[0] != "ib") return "sorry";
+
+	action_raw_arr = request.command_arr.slice(1);
+
+	request.command_arr.forEach(function (part) {
+		if (part.contains("-")) {
+			action = part.substr(1);
+		}
+	})
+
+	if (action) {
+		params = action_raw_arr.slice(action_raw_arr.indexOf("-"+action)+1);
+	}
+	else {
+		action = "search";
+		params = action_raw_arr;
+	}
+
+	if (action == "search" || action == "s") 
+	search(params);
 }
 
 function search(params) {
 	var site;
+	var req;
 
 	if (params[0] != undefined) {
 		site = params[0];
@@ -35,7 +58,7 @@ function search(params) {
 	var raw_response;
 
 	if (site == "g") site = "gelbooru";
-	if (site == "any" || site == "all") { site = "-site:lolibooru" } else { site = "site:"+site }
+	if (site == "any" || site == "all") { site = "-site:lolibooru" } else { site = "site:"+site } //lolibooru is down
 
 	options.path = "/?action=search&search[phrase]="+site;
 	var tags = params.splice(1);
@@ -44,7 +67,8 @@ function search(params) {
 	})
 	options.path += "&search[count]=100&format=js&js[data]=json";
 	console.log(options.path);
-	req = http.request(options)
+
+	req = http.request(options);
 
 	req.on('response', function(res) {
 		res.on("data", function (chunk) {
@@ -52,7 +76,7 @@ function search(params) {
 		})
 		res.on("end", function() {
 			var undefinedGotIbSearch = process;
-			eval(raw_response); //process();
+			eval(raw_response); //process(); lel good use of eval
 		})
 
 	})
@@ -66,7 +90,7 @@ function process(response) {
 		return_string = response_object.response[getRandomInt(0,response_object.response.length-1)].page_url;
 	}
 	else {
-		return_string = "Sorry, bad request."
+		return_string = "Sorry, bad request.";
 	}
-	eventEmitter.emit('return', return_string);
+	client.say(recipient, '14'+return_string);
 }

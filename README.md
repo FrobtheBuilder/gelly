@@ -7,5 +7,5 @@ Right now she can only return one random result. More to come with that later.
 anyway, make sure you `npm install irc`, then rename `config.js.sample` to `config.js` and edit to your liking just 
 then `node main.js`
 
-you can use her with `<prefix>ib search <tags>` or just `<prefix>ib`
+you can use her with `<prefix>ib -search <board> <tags>` or just `<prefix>porn <tags>`
 
