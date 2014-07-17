@@ -13,6 +13,7 @@ client.on("message", function(nick, to, text, message) {
 	if (text.charAt(0) == conf.prefix) processCommand(text.split(conf.prefix)[1], to);
 });
 
+/*
 function processCommand(command, to) {
 
 	var command_arr = command.split(" ");
@@ -51,3 +52,5 @@ function processCommand(command, to) {
 
 	ibsearch.execute(action, params);
 }
+*/
+
