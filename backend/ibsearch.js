@@ -17,31 +17,37 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-exports.execute = function(request) {
+exports.processQuery = function(command_arr) { //processes the command args, without the actual command in the array.
 	var action;
-	var action_raw_arr = request.command_arr.slice(1);
-	client = request.client;
-	recipient = request.recipient;
-	if (request.command_arr[0] != "ib") return "sorry";
-
-	action_raw_arr = request.command_arr.slice(1);
-
-	request.command_arr.forEach(function (part) {
+	var params;
+	command_arr.forEach(function (part) {
 		if (part.contains("-")) {
 			action = part.substr(1);
 		}
 	})
 
 	if (action) {
-		params = action_raw_arr.slice(action_raw_arr.indexOf("-"+action)+1);
+		params = command_arr.slice(action_raw_arr.indexOf("-"+action)+1);
 	}
 	else {
 		action = "search";
-		params = action_raw_arr;
+		params = command_arr;
 	}
 
-	if (action == "search" || action == "s") 
-	search(params);
+	if (action = "s") action = "search";
+	return [action, params];
+}
+
+exports.execute = function(request) {
+	client = request.client;
+	recipient = request.recipient;
+
+	if (request.command_arr[0] != "ib") return false;
+
+	var command_processed = module.exports.processQuery(request.command_arr.slice(1));
+
+	if (command_processed[0] == "search") 
+	search(command_processed[1]);
 }
 
 function search(params) {
