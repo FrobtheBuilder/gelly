@@ -28,7 +28,7 @@ function log(request) {
 
 		if (data_obj[request.nick] === undefined) {
 			data_obj[request.nick] = {};
-		};
+		}
 
 		tags.forEach(function(tag) {
 			if (data_obj[request.nick]) {
@@ -58,14 +58,14 @@ function printProfile(nick) {
 			var profstring = "";
 			for (tag in data_obj[nick]) {
 				if (data_obj[nick].hasOwnProperty(tag)) {
-					profstring += tag + ": " + data_obj[nick][tag] + ", "
+					profstring += tag + ": " + data_obj[nick][tag] + ", ";
 				}
 			}
 			profstring = profstring.substr(0, profstring.length-2);
 			client.say(recipient, profstring);
 		}
 		else {
-			client.say(recipient, "No Data.")
+			client.say(recipient, "No Data.");
 		}
 	});
 }
