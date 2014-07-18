@@ -96,7 +96,7 @@ function process(response) {
 		return_string = response_object.response[getRandomInt(0,response_object.response.length-1)].page_url;
 	}
 	else {
-		return_string = "Sorry, bad request.";
+		return_string = "Sorry, no results.";
 	}
 	client.say(recipient, '14'+return_string);
 }
