@@ -1,0 +1,9 @@
+{
+	"name": "Gelly",
+	"description": "IRC bot for searching imageboards",
+	"author": "frobthebuilder <ebanyash@gmail.com>",
+	"dependencies": {
+		"irc": "0.3.x",
+		"request": "2.37.x"
+	}
+}
