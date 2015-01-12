@@ -3,7 +3,7 @@
   "description": "IRC bot for searching imageboards",
   "author": "frobthebuilder <ebanyash@gmail.com>",
   "dependencies": {
-    "irc": "^0.3.8",
+    "irc": "0.3.7",
     "lodash": "^2.4.1",
     "request": "2.37.x"
   }

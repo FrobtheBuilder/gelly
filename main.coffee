@@ -2,6 +2,10 @@ irc = require("irc")
 config = require("./config.js")
 
 client = new irc.Client config.server, config.nick, config
+modules = ["./backend/gelbooru"]
 
-client.on "message", (nick, to, text, message) ->
-	console.log("message")
+bot = require("./bot.coffee")
+
+
+bot.init(client, modules)
+bot.bind(config.prefix)
